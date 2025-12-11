@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - TC Illuminations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background-color: #000000;
+            overflow-x: hidden;
+        }
+
+        /* Dynamic Background Lights */
+        .lights-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #000000;
+        }
+
+        .light {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.9;
+            width: 3px;
+            height: 3px;
+            background-color: transparent;
+            animation:
+                float-x 20s infinite alternate ease-in-out,
+                float-y 25s infinite alternate ease-in-out,
+                twinkle 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes float-x {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(120px); }
+        }
+        @keyframes float-y {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-120px); }
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.5; transform: scale(0.9); }
+            30% { opacity: 1.0; transform: scale(1.1); }
+            60% { opacity: 0.6; transform: scale(1.0); }
+            100% { opacity: 0.5; transform: scale(0.9); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0;
+            pointer-events: none;
+        }
+
+        .header-card {
+            background: #1e4d2b;
+            border-radius: 16px;
+            padding: 0.75rem 2rem;
+            max-width: 1200px;
+            margin: 1rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            pointer-events: auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #f0f0f0;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+            padding: 5px 0;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 2px #ffee00, 0 0 5px #ffdd00;
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        /* On mobile, push hamburger to the right */
+        @media (max-width: 768px) {
+            .header-card {
+                position: relative;
+            }
+            
+            .hamburger {
+                position: absolute;
+                right: 2rem;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+            }
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        /* Cart Container */
+        .cart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid #e9ecef;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+
+        .continue-shopping {
+            color: #1e4d2b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            padding: 0.875rem 1.75rem;
+            border: 2px solid #1e4d2b;
+            border-radius: 10px;
+            min-height: 48px;
+            line-height: 1.5;
+        }
+
+        .continue-shopping:hover {
+            background: #1e4d2b;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Empty Cart State */
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-cart i {
+            font-size: 5rem;
+            color: #dee2e6;
+            margin-bottom: 2rem;
+        }
+
+        .empty-cart h2 {
+            color: #495057;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .empty-cart p {
+            color: #6c757d;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Cart Items */
+        .cart-items {
+            margin-bottom: 3rem;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 120px 1fr auto;
+            gap: 2rem;
+            padding: 2rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .cart-item:hover {
+            border-color: #2d5f3f;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .item-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .item-specs {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .item-spec {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .item-spec i {
+            color: #2d5f3f;
+        }
+
+        .color-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: #f8f9fa;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #dee2e6;
+        }
+
+        .item-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1.5rem;
+        }
+
+        .item-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e4d2b;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #2d5f3f;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: #1e4d2b;
+            transform: scale(1.1);
+        }
+
+        .qty-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .remove-btn:hover {
+            color: #c82333;
+            text-decoration: underline;
+        }
+
+        /* Cart Summary */
+        .cart-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 2px solid #dee2e6;
+        }
+
+        .summary-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+            color: #495057;
+        }
+
+        .summary-row.total {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e4d2b;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 3px solid #dee2e6;
+        }
+
+        .summary-note {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border-left: 4px solid #2d5f3f;
+        }
+
+        .summary-note i {
+            color: #2d5f3f;
+            margin-right: 0.75rem;
+        }
+
+        .summary-note p {
+            margin: 0;
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* CTA Button */
+        .reserve-btn {
+            width: 100%;
+            padding: 0.875rem 1.75rem;
+            background: linear-gradient(135deg, #2d5f3f 0%, #1e4d2b 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 16px rgba(30, 77, 43, 0.3);
+            min-height: 48px;
+            line-height: 1.5;
+        }
+
+        .reserve-btn:hover {
+            background: linear-gradient(135deg, #1e4d2b 0%, #143520 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 77, 43, 0.4);
+        }
+
+        .reserve-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Trust Section */
+        .trust-section {
+            margin-top: 2.5rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .trust-section h3 {
+            color: #1a1a1a;
+            margin-bottom: 1.75rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .trust-item {
+            text-align: center;
+        }
+
+        .trust-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #2d5f3f 0%, #1e4d2b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .trust-item h4 {
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .trust-item p {
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2d5f3f 0%, #1a422b 100%);
+            color: #f0f0f0;
+            padding: 3rem 2rem 1.5rem;
+            border-radius: 20px 20px 0 0;
+            margin-top: 4rem;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-section a {
+            color: #b3e6b3;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #4a805c;
+            color: #d0d0d0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .cart-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: flex-start;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .cart-item {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .item-image {
+                width: 100%;
+                height: 200px;
+                margin: 0 auto;
+            }
+
+            .item-actions {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lights-container" id="lightsContainer"></div>
+
+    <header>
+        <div class="header-card">
+            <a href="index.html" class="logo">TC Illuminations</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#our-trees">Our Trees</a></li>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#faqs">FAQs</a></li>
+                    <li><a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="cart-container">
+            <div class="page-header">
+                <h1>Your Cart</h1>
+                <a href="index.html#our-trees" class="continue-shopping">
+                    <i class="fas fa-arrow-left"></i>
+                    Continue Shopping
+                </a>
+            </div>
+
+            <!-- Empty cart state (hidden by default) -->
+            <div class="empty-cart" id="emptyCart" style="display: none;">
+                <i class="fas fa-shopping-cart"></i>
+                <h2>Your cart is empty</h2>
+                <p>Add some beautiful trees to get started!</p>
+                <a href="index.html#our-trees" class="reserve-btn" style="max-width: 300px; margin: 0 auto;">
+                    <i class="fas fa-tree"></i>
+                    Browse Our Trees
+                </a>
+            </div>
+
+            <!-- Cart items (populated by JavaScript) -->
+            <div class="cart-items" id="cartItems"></div>
+
+            <!-- Cart summary (hidden when empty) -->
+            <div class="cart-summary" id="cartSummary" style="display: none;">
+                <h2 class="summary-title">Order Summary</h2>
+                
+                <div class="summary-row">
+                    <span>Subtotal (<span id="itemCount">0</span> item<span id="itemPlural">s</span>):</span>
+                    <span id="subtotal">$0</span>
+                </div>
+                
+                <div class="summary-note">
+                    <i class="fas fa-info-circle"></i>
+                    <p><strong>What's Included:</strong> Complete professional installation, all equipment and materials, premium LED lights, maintenance throughout the season, and full breakdown & removal at the end of the rental period.</p>
+                </div>
+
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="total">$0</span>
+                </div>
+
+                <button class="reserve-btn" id="reserveBtn">
+                    <i class="fas fa-calendar-check"></i>
+                    Complete Your Reservation
+                </button>
+            </div>
+
+            <!-- Trust Section -->
+            <div class="trust-section">
+                <h3>Why Choose TC Illuminations?</h3>
+                <div class="trust-grid">
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h4>Professional Setup</h4>
+                        <p>Expert installation included</p>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h4>Made in Ocala</h4>
+                        <p>Locally crafted quality</p>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Fully Insured</h4>
+                        <p>Complete peace of mind</p>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <i class="fas fa-hand-sparkles"></i>
+                        </div>
+                        <h4>Hassle-Free</h4>
+                        <p>We handle everything</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Reservation Modal -->
+    <div class="modal" id="reserveModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;">
+        <div class="modal-content" style="background: white; border-radius: 20px; padding: 3rem; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; position: relative;">
+            <span class="close-modal" style="position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; cursor: pointer; color: #999; line-height: 1;">&times;</span>
+            <h2 style="color: #1e4d2b; margin-bottom: 2rem; font-size: 2rem;">Complete Your Reservation</h2>
+            <form id="reservationForm" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="cbe199d5-9da2-4948-b047-a780f23c5105">
+                <input type="hidden" name="subject" value="New Tree Reservation from TC Illuminations">
+                <input type="hidden" id="cartDataField" name="cart_items" value="">
+                
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid #2d5f3f;">
+                    <h3 style="color: #1e4d2b; margin-bottom: 1rem; font-size: 1.2rem;">Your Order Summary:</h3>
+                    <div id="modalCartSummary" style="color: #555; line-height: 1.8;"></div>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;">Full Name *</label>
+                    <input type="text" name="name" required style="width: 100%; padding: 0.875rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;">Email *</label>
+                    <input type="email" name="email" required style="width: 100%; padding: 0.875rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;">Phone *</label>
+                    <input type="tel" name="phone" required style="width: 100%; padding: 0.875rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;">Installation Address *</label>
+                    <input type="text" name="address" required style="width: 100%; padding: 0.875rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #333;">Additional Details or Questions</label>
+                    <textarea name="message" rows="4" style="width: 100%; padding: 0.875rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
+                </div>
+                
+                <button type="submit" class="reserve-btn" style="width: 100%; margin-top: 1rem;">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Reservation Request
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>TC Illuminations</h4>
+                <p>Bringing premium, professionally installed Christmas trees to Ocala, FL.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="index.html#our-trees">Our Trees</a>
+                <a href="index.html#features">Features</a>
+                <a href="cart.html">Cart</a>
+            </div>
+            <div class="footer-section">
+                <h4>Products</h4>
+                <a href="product-18ft.html">18ft Tree</a>
+                <a href="product-30ft.html">30ft Tree</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p><strong>Phone:</strong> (352) 804-5785</p>
+                <p><strong>Location:</strong> Ocala, FL</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TC Illuminations. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dynamic Lights Background
+        const lightsContainer = document.getElementById('lightsContainer');
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff'];
+
+        for (let i = 0; i < 60; i++) {
+            const light = document.createElement('div');
+            light.classList.add('light');
+            
+            const top = Math.random() * 100 + '%';
+            const left = Math.random() * 100 + '%';
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const delay = Math.random() * 5 + 's';
+            const duration = Math.random() * 15 + 10;
+            
+            light.style.top = top;
+            light.style.left = left;
+            light.style.backgroundColor = color;
+            light.style.boxShadow = `0 0 10px ${color}, 0 0 70px ${color}`;
+            light.style.animationDelay = delay;
+            light.style.animationDuration = `${duration}s, ${duration + 5}s, 4s`;
+
+            lightsContainer.appendChild(light);
+        }
+
+        // Cart Management
+        function getCart() {
+            const cart = localStorage.getItem('tcCart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('tcCart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function updateCartCount() {
+            const cart = getCart();
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountEl = document.getElementById('cartCount');
+            if (cartCountEl) {
+                cartCountEl.textContent = count;
+                cartCountEl.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function getColorDotStyle(color) {
+            const colorMap = {
+                'pure-white': 'background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%); border-color: #ccc;',
+                'warm-white': 'background: linear-gradient(135deg, #fff5e1 0%, #ffe4b5 100%);',
+                'multicolor': 'background: linear-gradient(135deg, #ff0000 0%, #ffff00 25%, #00ff00 50%, #0000ff 75%, #ff00ff 100%);',
+                'red': 'background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);',
+                'blue': 'background: linear-gradient(135deg, #1e90ff 0%, #00008b 100%);',
+                'green': 'background: linear-gradient(135deg, #32cd32 0%, #006400 100%);'
+            };
+            return colorMap[color] || '';
+        }
+
+        function getColorName(color) {
+            const nameMap = {
+                'pure-white': 'Pure White',
+                'warm-white': 'Warm White',
+                'multicolor': 'Multicolor',
+                'red': 'Red',
+                'blue': 'Blue',
+                'green': 'Green'
+            };
+            return nameMap[color] || color;
+        }
+
+        function renderCart() {
+            const cart = getCart();
+            const emptyCart = document.getElementById('emptyCart');
+            const cartItems = document.getElementById('cartItems');
+            const cartSummary = document.getElementById('cartSummary');
+
+            if (cart.length === 0) {
+                emptyCart.style.display = 'block';
+                cartItems.style.display = 'none';
+                cartSummary.style.display = 'none';
+                updateCartCount();
+                return;
+            }
+
+            emptyCart.style.display = 'none';
+            cartItems.style.display = 'block';
+            cartSummary.style.display = 'block';
+
+            // Render items
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <img class="item-image" src="assets/${item.size}-trees-${item.color}.png" alt="${item.name}">
+                    
+                    <div class="item-details">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-specs">
+                            <div class="item-spec">
+                                <i class="fas fa-ruler-vertical"></i>
+                                <span>${item.size} tall</span>
+                            </div>
+                            <div class="item-spec">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>${item.size === '18ft' ? '1000+' : '1600+'} LEDs</span>
+                            </div>
+                        </div>
+                        <div class="color-indicator">
+                            <span class="color-dot" style="${getColorDotStyle(item.color)}"></span>
+                            <span>${getColorName(item.color)} Lights</span>
+                        </div>
+                    </div>
+
+                    <div class="item-actions">
+                        <div class="item-price">$${(item.price * item.quantity).toLocaleString()}</div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="updateQuantity(${index}, -1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <div class="qty-display">${item.quantity}</div>
+                            <button class="qty-btn" onclick="updateQuantity(${index}, 1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(${index})">
+                            <i class="fas fa-trash"></i>
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Calculate totals
+            const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            document.getElementById('itemCount').textContent = itemCount;
+            document.getElementById('itemPlural').textContent = itemCount !== 1 ? 's' : '';
+            document.getElementById('subtotal').textContent = '$' + subtotal.toLocaleString();
+            document.getElementById('total').textContent = '$' + subtotal.toLocaleString();
+
+            updateCartCount();
+        }
+
+        function updateQuantity(index, change) {
+            const cart = getCart();
+            cart[index].quantity += change;
+            
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            
+            saveCart(cart);
+        }
+
+        function removeItem(index) {
+            if (confirm('Remove this item from your cart?')) {
+                const cart = getCart();
+                cart.splice(index, 1);
+                saveCart(cart);
+            }
+        }
+
+        // Reserve button - opens modal with cart data
+        const modal = document.getElementById('reserveModal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        
+        document.getElementById('reserveBtn').addEventListener('click', () => {
+            const cart = getCart();
+            
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add items before reserving.');
+                return;
+            }
+            
+            // Build cart summary for modal
+            let cartSummary = '';
+            cart.forEach(item => {
+                cartSummary += `<div style="margin-bottom: 0.75rem;"><strong>${item.name}</strong><br>`;
+                cartSummary += `Color: ${getColorName(item.color)} | Qty: ${item.quantity} | $${(item.price * item.quantity).toLocaleString()}</div>`;
+            });
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartSummary += `<div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #dee2e6; font-size: 1.2rem;"><strong>Total: $${total.toLocaleString()}</strong></div>`;
+            
+            document.getElementById('modalCartSummary').innerHTML = cartSummary;
+            
+            // Create detailed cart data for hidden field
+            let cartData = cart.map(item => 
+                `${item.name} - ${getColorName(item.color)} (Qty: ${item.quantity}) - $${(item.price * item.quantity).toLocaleString()}`
+            ).join(' | ');
+            cartData += ` | TOTAL: $${total.toLocaleString()}`;
+            
+            document.getElementById('cartDataField').value = cartData;
+            
+            // Show modal
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Form submission success
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            // Web3Forms will handle the submission
+            // After successful submission, they can clear the cart if desired
+            setTimeout(() => {
+                if (confirm('Reservation submitted! Would you like to clear your cart?')) {
+                    localStorage.removeItem('tcCart');
+                    window.location.href = 'index.html';
+                }
+            }, 500);
+        });
+
+        // Initialize cart on page load
+        renderCart();
+    </script>
+</body>
+</html>

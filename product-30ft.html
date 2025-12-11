@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30ft Premium Tree - TC Illuminations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background-color: #000000;
+            overflow-x: hidden;
+        }
+
+        /* Dynamic Background Lights */
+        .lights-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #000000;
+        }
+
+        .light {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.9;
+            width: 3px;
+            height: 3px;
+            background-color: transparent;
+            animation:
+                float-x 20s infinite alternate ease-in-out,
+                float-y 25s infinite alternate ease-in-out,
+                twinkle 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes float-x {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(120px); }
+        }
+        @keyframes float-y {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-120px); }
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.5; transform: scale(0.9); }
+            30% { opacity: 1.0; transform: scale(1.1); }
+            60% { opacity: 0.6; transform: scale(1.0); }
+            100% { opacity: 0.5; transform: scale(0.9); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0;
+            pointer-events: none;
+        }
+
+        .header-card {
+            background: #1e4d2b;
+            border-radius: 16px;
+            padding: 0.75rem 2rem;
+            max-width: 1200px;
+            margin: 1rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            pointer-events: auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #f0f0f0;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+            padding: 5px 0;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 2px #ffee00, 0 0 5px #ffdd00;
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.3rem;
+            color: #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cart-icon:hover {
+            color: white;
+            text-shadow: 0 0 2px #ffee00, 0 0 5px #ffdd00;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        /* On mobile, push hamburger to the right */
+        @media (max-width: 768px) {
+            .header-card {
+                position: relative;
+            }
+            
+            .hamburger {
+                position: absolute;
+                right: 2rem;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+            }
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 120px;
+            padding-bottom: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        /* Product Container */
+        .product-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb {
+            color: #555;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: #1e4d2b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: #2d5f3f;
+            text-decoration: underline;
+        }
+
+        .breadcrumb i {
+            margin: 0 0.5rem;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        /* Product Images */
+        .product-images {
+            position: sticky;
+            top: 140px;
+        }
+
+        .main-image {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.75rem;
+        }
+
+        .thumbnail {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+            object-fit: cover;
+        }
+
+        .thumbnail:hover {
+            border-color: #2d5f3f;
+            transform: scale(1.05);
+        }
+
+        .thumbnail.active {
+            border-color: #1e4d2b;
+        }
+
+        /* Product Info */
+        .product-info h1 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 1.1rem;
+        }
+
+        .price-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px solid #dee2e6;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            color: #1e4d2b;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-note {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .specs-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .spec-item i {
+            color: #2d5f3f;
+            font-size: 1.1rem;
+        }
+
+        /* Color Selector */
+        .color-selector {
+            margin-bottom: 2rem;
+        }
+
+        .color-selector label {
+            display: block;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .color-option {
+            border: 3px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .color-option:hover {
+            border-color: #2d5f3f;
+            background: #f5f5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .color-option.selected {
+            border-color: #1e4d2b;
+            background: #e8f5e9;
+            box-shadow: 0 4px 16px rgba(30, 77, 43, 0.2);
+        }
+
+        .color-swatch {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .color-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        /* Features Section */
+        .features-section {
+            margin: 2.5rem 0;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .features-section h2 {
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #2d5f3f 0%, #1e4d2b 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content h3 {
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-content p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Description */
+        .description-section {
+            margin: 2.5rem 0;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .description-section h2 {
+            color: #1a1a1a;
+            margin-bottom: 1.25rem;
+            font-size: 1.8rem;
+        }
+
+        .description-section p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .description-section ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .description-section ul li {
+            margin-bottom: 0.5rem;
+            color: #444;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 1.25rem;
+            margin-top: 2.5rem;
+        }
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            min-height: 48px;
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2d5f3f 0%, #1e4d2b 100%);
+            color: white;
+            flex: 2;
+            box-shadow: 0 4px 16px rgba(30, 77, 43, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1e4d2b 0%, #143520 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 77, 43, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1e4d2b;
+            border: 3px solid #1e4d2b;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9fa;
+            border-color: #2d5f3f;
+            transform: translateY(-1px);
+        }
+
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #555;
+        }
+
+        .trust-badge i {
+            font-size: 1.5rem;
+            color: #2d5f3f;
+        }
+
+        .trust-badge-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .trust-badge-text strong {
+            display: block;
+            color: #1a1a1a;
+            font-size: 1rem;
+            margin-bottom: 0.15rem;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2d5f3f 0%, #1a422b 100%);
+            color: #f0f0f0;
+            padding: 3rem 2rem 1.5rem;
+            border-radius: 20px 20px 0 0;
+            margin-top: 4rem;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-section a {
+            color: #b3e6b3;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #4a805c;
+            color: #d0d0d0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            main {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+
+            .product-container {
+                padding: 1.5rem;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .product-images {
+                position: static;
+            }
+
+            .product-info h1 {
+                font-size: 2rem;
+            }
+
+            .price {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                flex: 1;
+            }
+
+            .trust-badges {
+                gap: 1rem;
+            }
+
+            .color-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lights-container" id="lightsContainer"></div>
+
+    <header>
+        <div class="header-card">
+            <a href="index.html" class="logo">TC Illuminations</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#our-trees">Our Trees</a></li>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#faqs">FAQs</a></li>
+                    <li><a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="product-container">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="index.html#our-trees">Our Trees</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>30ft Premium Tree</span>
+            </div>
+
+            <div class="product-grid">
+                <!-- Product Images -->
+                <div class="product-images">
+                    <img id="mainImage" class="main-image" src="assets/30ft-trees-pure-white.png" alt="30 foot premium Christmas tree">
+                    
+                    <div class="thumbnail-grid">
+                        <img class="thumbnail active" src="assets/30ft-trees-pure-white.png" data-color="pure-white" alt="Pure white lights">
+                        <img class="thumbnail" src="assets/30ft-trees-warm-white.png" data-color="warm-white" alt="Warm white lights">
+                        <img class="thumbnail" src="assets/30ft-trees-multicolor.png" data-color="multicolor" alt="Multicolor lights">
+                        <img class="thumbnail" src="assets/30ft-trees-red.png" data-color="red" alt="Red lights">
+                        <img class="thumbnail" src="assets/30ft-trees-blue.png" data-color="blue" alt="Blue lights">
+                        <img class="thumbnail" src="assets/30ft-trees-green.png" data-color="green" alt="Green lights">
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-info">
+                    <h1>30ft Premium Christmas Tree</h1>
+                    
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span>(Perfect for commercial & large displays)</span>
+                    </div>
+
+                    <div class="price-section">
+                        <div class="price">Starting at $1200</div>
+                        <div class="price-note">Complete installation, rental period & removal included</div>
+                        
+                        <div class="specs-list">
+                            <div class="spec-item">
+                                <i class="fas fa-ruler-vertical"></i>
+                                <span>30 feet tall</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>1600+ LED bulbs</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-tools"></i>
+                                <span>Professional installation</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Full season rental</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Color Selector -->
+                    <div class="color-selector">
+                        <label>Choose Your Light Color:</label>
+                        <div class="color-options">
+                            <div class="color-option selected" data-color="pure-white">
+                                <div class="color-swatch" style="background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%); border: 2px solid #ddd;"></div>
+                                <div class="color-name">Pure White</div>
+                            </div>
+                            <div class="color-option" data-color="warm-white">
+                                <div class="color-swatch" style="background: linear-gradient(135deg, #fff5e1 0%, #ffe4b5 100%);"></div>
+                                <div class="color-name">Warm White</div>
+                            </div>
+                            <div class="color-option" data-color="multicolor">
+                                <div class="color-swatch" style="background: linear-gradient(135deg, #ff0000 0%, #ffff00 25%, #00ff00 50%, #0000ff 75%, #ff00ff 100%);"></div>
+                                <div class="color-name">Multicolor</div>
+                            </div>
+                            <div class="color-option" data-color="red">
+                                <div class="color-swatch" style="background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);"></div>
+                                <div class="color-name">Red</div>
+                            </div>
+                            <div class="color-option" data-color="blue">
+                                <div class="color-swatch" style="background: linear-gradient(135deg, #1e90ff 0%, #00008b 100%);"></div>
+                                <div class="color-name">Blue</div>
+                            </div>
+                            <div class="color-option" data-color="green">
+                                <div class="color-swatch" style="background: linear-gradient(135deg, #32cd32 0%, #006400 100%);"></div>
+                                <div class="color-name">Green</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="cta-buttons">
+                        <button class="btn btn-primary" id="addToCartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                        <a href="cart.html" class="btn btn-secondary">
+                            <i class="fas fa-eye"></i>
+                            View Cart
+                        </a>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            <div class="trust-badge-text">
+                                <strong>Insured</strong>
+                                <span>Fully covered</span>
+                            </div>
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-truck"></i>
+                            <div class="trust-badge-text">
+                                <strong>Free Setup</strong>
+                                <span>& removal</span>
+                            </div>
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div class="trust-badge-text">
+                                <strong>Local</strong>
+                                <span>Made in Ocala</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description Section -->
+            <div class="description-section">
+                <h2>Product Description</h2>
+                <p>Our 30ft Premium Christmas Tree is a showstopping centerpiece designed for large commercial spaces, expansive estates, and public venues. Handcrafted in Ocala, Florida, this magnificent tree features over 1600 premium commercial-grade LED lights that create an unforgettable holiday display visible from blocks away.</p>
+                
+                <p>This impressive tree size is perfect for making a bold statement and is ideal for:</p>
+                <ul>
+                    <li>Large commercial properties and corporate campuses</li>
+                    <li>Shopping malls and retail centers</li>
+                    <li>Hotels, resorts, and event venues</li>
+                    <li>City centers and public squares</li>
+                    <li>Large estates and luxury properties</li>
+                    <li>Convention centers and entertainment venues</li>
+                </ul>
+
+                <p>Every rental includes complete professional installation with specialized equipment, all necessary materials and safety measures, maintenance throughout the season, and full breakdown and removal when the holidays are over. Our experienced team ensures flawless execution from start to finish.</p>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features-section">
+                <h2>What's Included</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Professional Installation</h3>
+                            <p>Our expert team delivers, assembles, and securely installs your tree with all necessary equipment and safety measures.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Premium LED Lights</h3>
+                            <p>Commercial-grade, energy-efficient LED bulbs in your choice of colors. Custom colors available upon request.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Tree Topper Options</h3>
+                            <p>Choose from our selection of elegant toppers including stars, snowflakes, and bows to complete your tree.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Full Season Rental</h3>
+                            <p>Enjoy your tree from early December through early January. We handle all maintenance and ensure it stays perfect.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-hand-sparkles"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Hassle-Free Removal</h3>
+                            <p>When the season ends, we return to carefully disassemble and remove everything. No work required from you.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Locally Made</h3>
+                            <p>Manufactured and assembled right here in Ocala, FL. Supporting local craftsmanship and quality you can trust.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>TC Illuminations</h4>
+                <p>Bringing premium, professionally installed Christmas trees to Ocala, FL.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="index.html#our-trees">Our Trees</a>
+                <a href="index.html#features">Features</a>
+                <a href="cart.html">Cart</a>
+            </div>
+            <div class="footer-section">
+                <h4>Products</h4>
+                <a href="product-18ft.html">18ft Tree</a>
+                <a href="product-30ft.html">30ft Tree</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p><strong>Phone:</strong> (352) 804-5785</p>
+                <p><strong>Location:</strong> Ocala, FL</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TC Illuminations. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dynamic Lights Background
+        const lightsContainer = document.getElementById('lightsContainer');
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff'];
+
+        for (let i = 0; i < 60; i++) {
+            const light = document.createElement('div');
+            light.classList.add('light');
+            
+            const top = Math.random() * 100 + '%';
+            const left = Math.random() * 100 + '%';
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const delay = Math.random() * 5 + 's';
+            const duration = Math.random() * 15 + 10;
+            
+            light.style.top = top;
+            light.style.left = left;
+            light.style.backgroundColor = color;
+            light.style.boxShadow = `0 0 10px ${color}, 0 0 70px ${color}`;
+            light.style.animationDelay = delay;
+            light.style.animationDuration = `${duration}s, ${duration + 5}s, 4s`;
+
+            lightsContainer.appendChild(light);
+        }
+
+        // Image Gallery & Color Selector
+        const mainImage = document.getElementById('mainImage');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const colorOptions = document.querySelectorAll('.color-option');
+        let selectedColor = 'pure-white';
+
+        // Thumbnail click handler
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                const color = thumb.dataset.color;
+                updateImage(color);
+                updateColorSelection(color);
+            });
+        });
+
+        // Color option click handler
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const color = option.dataset.color;
+                updateImage(color);
+                updateColorSelection(color);
+            });
+        });
+
+        function updateImage(color) {
+            selectedColor = color;
+            mainImage.src = `assets/30ft-trees-${color}.png`;
+            
+            // Update active thumbnail
+            thumbnails.forEach(t => t.classList.remove('active'));
+            document.querySelector(`.thumbnail[data-color="${color}"]`).classList.add('active');
+        }
+
+        function updateColorSelection(color) {
+            colorOptions.forEach(opt => opt.classList.remove('selected'));
+            document.querySelector(`.color-option[data-color="${color}"]`).classList.add('selected');
+        }
+
+        // Cart functionality
+        function getCart() {
+            const cart = localStorage.getItem('tcCart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('tcCart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            const cart = getCart();
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountEl = document.getElementById('cartCount');
+            if (cartCountEl) {
+                cartCountEl.textContent = count;
+                cartCountEl.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        // Add to cart button
+        document.getElementById('addToCartBtn').addEventListener('click', () => {
+            const cart = getCart();
+            
+            // Check if item already exists
+            const existingItem = cart.find(item => item.size === '30ft' && item.color === selectedColor);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    size: '30ft',
+                    color: selectedColor,
+                    price: 1200,
+                    quantity: 1,
+                    name: '30ft Premium Christmas Tree'
+                });
+            }
+            
+            saveCart(cart);
+            
+            // Visual feedback
+            const btn = document.getElementById('addToCartBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Added to Cart!';
+            btn.style.background = '#28a745';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 2000);
+        });
+
+        // Initialize cart count on page load
+        updateCartCount();
+    </script>
+</body>
+</html>
