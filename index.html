@@ -253,6 +253,37 @@
             font-size: 1.25rem;
             opacity: 0.9;
         }
+/* --- Banner Overlay + Vignette --- */
+#banner-hero {
+    position: relative;
+    overflow: hidden; /* prevents overlay spill */
+}
+
+#banner-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45); /* main dark overlay */
+    z-index: 1;
+}
+
+#banner-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle,
+        rgba(0,0,0,0) 45%,   /* center clear */
+        rgba(0,0,0,0.65) 100% /* dark edges */
+    );
+    z-index: 2;
+}
+
+/* Ensures banner text stays ABOVE overlays */
+#banner-hero > * {
+    position: relative;
+    z-index: 3;
+}
 
         /* Standard Headers */
         h2 {
@@ -291,13 +322,15 @@
             position: relative;
             border-radius: 12px 12px 0 0; 
             aspect-ratio: 4/3; 
+            
         }
 
         .tree-image img {
             width: 100%;
             height: 100%; 
             display: block;
-            object-fit: contain; 
+            object-fit: contain;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         /* Style for the Color Selector Dropdown */
@@ -455,7 +488,23 @@
             font-size: 3rem;
             opacity: 0.3;
         }
+        .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This fills the container while cropping to fit */
+    display: block;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
 
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Hide the camera emoji when there's an image */
+.gallery-item img ~ ::after {
+    display: none;
+}
         /* CTA Banner */
         #cta-banner {
             background: linear-gradient(135deg, #2d5f3f 0%, #1a422b 100%);
@@ -773,16 +822,22 @@
         </section>
 
         <section id="gallery" class="floating-section">
-            <h2>Gallery</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item"></div>
-                <div class="gallery-item"></div>
-                <div class="gallery-item"></div>
-                <div class="gallery-item"></div>
-                <div class="gallery-item"></div>
-                <div class="gallery-item"></div>
-            </div>
-        </section>
+    <h2>Gallery</h2>
+    <div class="gallery-grid">
+        <div class="gallery-item">
+            <img src="https://tcilluminations.com/wp-content/uploads/2022/11/IMG_3695-scaled.jpeg" alt="Christmas tree installation 1" loading="lazy">
+        </div>
+        <div class="gallery-item">
+            <img src="https://tcilluminations.com/wp-content/uploads/2022/11/IMG_3631-scaled.jpeg" alt="Christmas tree installation 2" loading="lazy">
+        </div>
+        <div class="gallery-item">
+            <img src="https://tcilluminations.com/wp-content/uploads/2022/11/65905905333__F2B4C4F7-F9EA-43C5-8845-55C7651B5A0A-scaled.jpeg" alt="Christmas tree installation 3" loading="lazy">
+        </div>
+        <div class="gallery-item">
+            <img src="https://tcilluminations.com/wp-content/uploads/2022/11/tc-illuminations-pic-3.jpg" alt="Christmas tree installation 4" loading="lazy">
+        </div>
+    </div>
+</section>
 
         <section id="cta-banner" class="floating-section">
             <h2>Feel the magic of Christmas</h2>
