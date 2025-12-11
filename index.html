@@ -143,6 +143,21 @@
             background: #ffee00; /* Yellow when active */
         }
 
+        /* On mobile, push hamburger to the right */
+        @media (max-width: 768px) {
+            .header-card {
+                position: relative;
+            }
+            
+            .hamburger {
+                position: absolute;
+                right: 2rem;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+            }
+        }
+
         .nav-links {
             display: flex;
             gap: 2rem;
@@ -166,6 +181,37 @@
             /* Subtler Glowing effect */
             text-shadow: 0 0 2px #ffee00, 0 0 5px #ffdd00; 
             /* Removed border-bottom */
+        }
+
+        /* Cart Icon in Header */
+        .cart-icon {
+            position: relative;
+            font-size: 1.3rem;
+            color: #f0f0f0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-icon:hover {
+            color: white;
+            text-shadow: 0 0 2px #ffee00, 0 0 5px #ffdd00;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
 
 
@@ -237,7 +283,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: url(https://tcilluminations.com/wp-content/uploads/2022/11/tc-illuminations-pic-2-scaled-1.webp) no-repeat center center;
+            background: url(assets/tc-illuminations-pic-2-scaled-1.webp) no-repeat center center;
             background-size: cover;
             color: white;
             text-align: center;
@@ -408,26 +454,30 @@
         .btn {
             background: #2d5f3f;
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.875rem 1.75rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
             text-decoration: none;
-            
-            display: inline-block;
-            width: auto;     
-            margin-left: 0; 
-            margin-right: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            line-height: 1.5;
         }
 
-        .btn:hover { background: #1f4429; }
+        .btn:hover { 
+            background: #1f4429;
+            transform: translateY(-1px);
+        }
         
         /* Features */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
 
@@ -435,9 +485,40 @@
             background: #f9f9f9;
             padding: 2rem;
             border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .feature-block h3 { color: #2d5f3f; margin-bottom: 1rem; }
+        .feature-block:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #2d5f3f 0%, #1e4d2b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.75rem;
+        }
+
+        .feature-block h3 { 
+            color: #1a1a1a; 
+            margin-bottom: 1rem;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .feature-block p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
 
         /* FAQs */
         .faq-item {
@@ -674,7 +755,7 @@
     <header>
         <div class="header-card">
             <div class="logo">
-                <img src="https://tcilluminations.com/wp-content/uploads/2022/09/tc_illuminations_logo_website.svg" alt="TC Illuminations Logo">
+                <img src="assets/tc_illuminations_logo_website.svg" alt="TC Illuminations Logo">
             </div>
             
             <div class="hamburger" id="hamburger">
@@ -689,7 +770,10 @@
                     <li><a href="#features">Features</a></li>
                     <li><a href="#faqs">FAQs</a></li>
                     <li><a href="#gallery">Gallery</a></li>
-                    <li><a href="#cta-banner">Reserve Your Tree</a></li>
+                    <li><a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount" style="display: none;">0</span>
+                    </a></li>
                 </ul>
             </nav>
         </div>
@@ -703,7 +787,7 @@
                 <li><a href="#features" class="drawer-link">Features</a></li>
                 <li><a href="#faqs" class="drawer-link">FAQs</a></li>
                 <li><a href="#gallery" class="drawer-link">Gallery</a></li>
-                <li><a href="#cta-banner" class="drawer-link">Reserve</a></li>
+                <li><a href="cart.html" class="drawer-link">Cart</a></li>
             </ul>
         </div>
     </div>
@@ -722,7 +806,7 @@
                 
                 <div class="tree-card" data-size="18ft">
                     <div class="tree-image">
-                        <img id="tree-img-18ft" src="https://tcilluminations.com/wp-content/uploads/2022/11/18ft-Trees-pure-white.png" loading="lazy" alt="18 foot decorated Christmas tree in pure white">
+                        <img id="tree-img-18ft" src="assets/18ft-trees-pure-white.png" loading="lazy" alt="18 foot decorated Christmas tree in pure white">
                     </div>
                     
                     <div class="color-selector">
@@ -733,23 +817,33 @@
                             <option value="multicolor">Multicolor</option>
                             <option value="red">Red</option>
                             <option value="blue">Blue</option>
+                            <option value="green">Green</option>
                         </select>
                     </div>
                     
                     <h3>18 ft Tree</h3>
-                    <div class="price">Starting at $600</div>
-                    <div class="specs">800+ LED Bulbs</div>
+                    <div class="price">Starting at $800</div>
+                    <div class="specs">1000+ LED Bulbs</div>
                     <div class="topper-icons">
                         <div class="topper-icon"><i class="fa-solid fa-star"></i></div>
                         <div class="topper-icon"><i class="fa-solid fa-snowflake"></i></div> 
                         <div class="topper-icon"><i class="fa-solid fa-gift"></i></div> 
                     </div>
-                    <button class="btn reserve-btn" data-tree-size="18ft">Reserve Your Tree</button>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.25rem; padding: 0 2rem;">
+                        <a href="product-18ft.html" class="btn" style="width: 100%; text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fas fa-info-circle"></i>
+                            View Details
+                        </a>
+                        <button class="btn reserve-btn" data-tree-size="18ft" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fas fa-calendar-check"></i>
+                            Quick Reserve
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="tree-card" data-size="30ft">
                     <div class="tree-image">
-                        <img id="tree-img-30ft" src="https://tcilluminations.com/wp-content/uploads/2022/11/30ft-Trees-pure-white.png" alt="30 foot decorated Christmas tree" loading="lazy">
+                        <img id="tree-img-30ft" src="assets/30ft-trees-pure-white.png" alt="30 foot decorated Christmas tree" loading="lazy">
                     </div>
                     
                     <div class="color-selector">
@@ -760,6 +854,7 @@
                             <option value="multicolor">Multicolor</option>
                             <option value="red">Red</option>
                             <option value="blue">Blue</option>
+                            <option value="green">Green</option>
                         </select>
                     </div>
                     
@@ -771,30 +866,53 @@
                         <div class="topper-icon"><i class="fa-solid fa-snowflake"></i></div> 
                         <div class="topper-icon"><i class="fa-solid fa-gift"></i></div> 
                     </div>
-                    <button class="btn reserve-btn" data-tree-size="30ft">Reserve Your Tree</button>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.25rem; padding: 0 2rem;">
+                        <a href="product-30ft.html" class="btn" style="width: 100%; text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fas fa-info-circle"></i>
+                            View Details
+                        </a>
+                        <button class="btn reserve-btn" data-tree-size="30ft" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fas fa-calendar-check"></i>
+                            Quick Reserve
+                        </button>
+                    </div>
                 </div>
                 
             </div>
         </section>
 
         <section id="features" class="floating-section">
-            <h2>Features</h2>
+            <h2>What's Included</h2>
             <div class="features-grid">
                 <div class="feature-block">
-                    <h3>Multiple Colors Available</h3>
-                    <p>Commercial-grade, energy-efficient LEDs available in multiple colors, including custom options to match your style and preferences.</p>
-                </div>
-                <div class="feature-block">
+                    <div class="feature-icon"><i class="fas fa-tools"></i></div>
                     <h3>Professional Installation</h3>
-                    <p>Delivery, installation, and all required materials are included. Our expert team handles everything from start to finish.</p>
+                    <p>Our expert team delivers, assembles, and securely installs your tree with all necessary equipment and safety measures.</p>
                 </div>
                 <div class="feature-block">
-                    <h3>Free Breakdown and Removal</h3>
-                    <p>Our team returns at the end of the rental period to disassemble and remove the tree. No hassle, no stress for you.</p>
+                    <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h3>Premium LED Lights</h3>
+                    <p>Commercial-grade, energy-efficient LED bulbs in your choice of colors. Custom colors available upon request.</p>
                 </div>
                 <div class="feature-block">
-                    <h3>Made in Ocala, FL</h3>
-                    <p>Our trees are manufactured and assembled locally for maximum quality. Supporting local craftsmanship you can trust.</p>
+                    <div class="feature-icon"><i class="fas fa-star"></i></div>
+                    <h3>Tree Topper Options</h3>
+                    <p>Choose from our selection of elegant toppers including stars, snowflakes, and bows to complete your tree.</p>
+                </div>
+                <div class="feature-block">
+                    <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>Full Season Rental</h3>
+                    <p>Enjoy your tree from early December through early January. We handle all maintenance and ensure it stays perfect.</p>
+                </div>
+                <div class="feature-block">
+                    <div class="feature-icon"><i class="fas fa-hand-sparkles"></i></div>
+                    <h3>Hassle-Free Removal</h3>
+                    <p>When the season ends, we return to carefully disassemble and remove everything. No work required from you.</p>
+                </div>
+                <div class="feature-block">
+                    <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Locally Made</h3>
+                    <p>Manufactured and assembled right here in Ocala, FL. Supporting local craftsmanship and quality you can trust.</p>
                 </div>
             </div>
         </section>
@@ -825,16 +943,16 @@
     <h2>Gallery</h2>
     <div class="gallery-grid">
         <div class="gallery-item">
-            <img src="https://tcilluminations.com/wp-content/uploads/2022/11/IMG_3695-scaled.jpeg" alt="Christmas tree installation 1" loading="lazy">
+            <img src="assets/IMG_3695-scaled.jpeg" alt="Christmas tree installation 1" loading="lazy">
         </div>
         <div class="gallery-item">
-            <img src="https://tcilluminations.com/wp-content/uploads/2022/11/IMG_3631-scaled.jpeg" alt="Christmas tree installation 2" loading="lazy">
+            <img src="assets/IMG_3631-scaled.jpeg" alt="Christmas tree installation 2" loading="lazy">
         </div>
         <div class="gallery-item">
-            <img src="https://tcilluminations.com/wp-content/uploads/2022/11/65905905333__F2B4C4F7-F9EA-43C5-8845-55C7651B5A0A-scaled.jpeg" alt="Christmas tree installation 3" loading="lazy">
+            <img src="assets/65905905333__F2B4C4F7-F9EA-43C5-8845-55C7651B5A0A-scaled.jpeg" alt="Christmas tree installation 3" loading="lazy">
         </div>
         <div class="gallery-item">
-            <img src="https://tcilluminations.com/wp-content/uploads/2022/11/tc-illuminations-pic-3.jpg" alt="Christmas tree installation 4" loading="lazy">
+            <img src="assets/tc-illuminations-pic-3.jpg" alt="Christmas tree installation 4" loading="lazy">
         </div>
     </div>
 </section>
@@ -856,22 +974,18 @@
                 <h4>Quick Links</h4>
                 <ul>
                     <li><a href="#our-trees">Our Trees</a></li>
+                    <li><a href="product-18ft.html">18ft Tree</a></li>
+                    <li><a href="product-30ft.html">30ft Tree</a></li>
                     <li><a href="#features">Features</a></li>
                     <li><a href="#faqs">FAQs</a></li>
                     <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="cart.html">Cart</a></li>
                 </ul>
             </div>
             <div class="footer-section contact-info">
                 <h4>Contact Us</h4>
-                <p><strong>Email:</strong> <a href="mailto:synergysoftwash@gmail.com">TC Illuminations</a></p>
+                <p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection#13606a7d7661746a607c75676472607b53747e727a7f3d707c7e">TC Illuminations</a></p>
                 <p><strong>Phone:</strong> (352) 804-5785</p>
-            </div>
-            <div class="footer-section newsletter">
-                <h4>Stay Updated</h4>
-                <form action="#" method="POST">
-                    <input type="email" placeholder="Your email" required>
-                    <button type="submit" class="btn">Sign Up</button>
-                </form>
             </div>
         </div>
         <div class="footer-bottom">
@@ -947,7 +1061,7 @@
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         /* --- JS for Light Generation (Enhanced Glow and Movement) --- */
         const lightsContainer = document.getElementById('lightsContainer');
         const colors = ['rgba(255, 100, 100, 1.0)', 'rgba(100, 255, 100, 1.0)', 'rgba(255, 255, 100, 1.0)', 'rgba(100, 100, 255, 1.0)', 'rgba(255, 255, 255, 1.0)'];
@@ -1042,9 +1156,14 @@
 
         // 4. Click Scroll Logic (Restored and Fixed Offset)
         function scrollToSection(e) {
-            e.preventDefault();
-            
             const targetId = e.currentTarget.getAttribute('href');
+            
+            // Don't prevent default for external links (like cart.html)
+            if (!targetId.startsWith('#')) {
+                return; // Allow normal navigation
+            }
+            
+            e.preventDefault();
             const targetElement = document.querySelector(targetId);
 
             if (targetElement) {
@@ -1077,7 +1196,7 @@
 
         // 5. Tree Color Selector Logic (In Tree Cards)
         const colorSelectors = document.querySelectorAll('.tree-color-select');
-        const imageBaseUrl = 'https://tcilluminations.com/wp-content/uploads/2022/11/';
+        const imageBaseUrl = 'assets/';
         const imageSuffix = '.png'; 
 
         colorSelectors.forEach(select => {
@@ -1088,7 +1207,7 @@
                 
                 if (treeImg) {
                     const treeSize = treeId.replace('tree-img-', ''); 
-                    const newSrc = `${imageBaseUrl}${treeSize}-Trees-${selectedColor}${imageSuffix}`;
+                    const newSrc = `${imageBaseUrl}${treeSize}-trees-${selectedColor}${imageSuffix}`;
                     treeImg.src = newSrc;
                 }
             });
@@ -1108,7 +1227,7 @@
             const color = ledColorSelect.value;                  
 
             if (size && (color !== '' && color !== 'custom')) {
-                const newSrc = `${imageBaseUrl}${size}ft-Trees-${color}.png`;
+                const newSrc = `${imageBaseUrl}${size}ft-trees-${color}.png`;
                 
                 if (!colorPreviewContainer.querySelector('img')) {
                     const img = document.createElement('img');
@@ -1178,11 +1297,30 @@
                 // Optional: Close others
                 document.querySelectorAll('.faq-item.active').forEach(openItem => {
                     if (openItem !== parent) {
-                        openItem.classList.remove('active');
+                            openItem.classList.remove('active');
                     }
                 });
             });
         });
+
+        // 9. Cart Management (Shopping Cart Functionality)
+        function getCart() {
+            const cart = localStorage.getItem('tcCart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        function updateCartCount() {
+            const cart = getCart();
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountEl = document.getElementById('cartCount');
+            if (cartCountEl) {
+                cartCountEl.textContent = count;
+                cartCountEl.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        // Update cart count when page loads
+        updateCartCount();
     </script>
 </body>
 </html>
