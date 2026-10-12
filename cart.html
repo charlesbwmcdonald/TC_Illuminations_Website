@@ -773,6 +773,7 @@
                     <i class="fas fa-paper-plane"></i>
                     Submit Reservation Request
                 </button>
+                <p id="reservationStatus" role="status" aria-live="polite" tabindex="-1" style="margin-top: 1rem; line-height: 1.5;"></p>
             </form>
         </div>
     </div>
@@ -1017,20 +1018,9 @@
             }
         });
         
-        // Form submission success
-        document.getElementById('reservationForm').addEventListener('submit', function(e) {
-            // Web3Forms will handle the submission
-            // After successful submission, they can clear the cart if desired
-            setTimeout(() => {
-                if (confirm('Reservation submitted! Would you like to clear your cart?')) {
-                    localStorage.removeItem('tcCart');
-                    window.location.href = 'index.html';
-                }
-            }, 500);
-        });
-
         // Initialize cart on page load
         renderCart();
     </script>
+    <script src="reservation.js"></script>
 </body>
 </html>

@@ -1001,7 +1001,6 @@
             <form id="reservationForm" action="https://api.web3forms.com/submit" method="POST">
                 <input type="hidden" name="access_key" value="cbe199d5-9da2-4948-b047-a780f23c5105">
                 <input type="hidden" name="subject" value="New Tree Reservation from TC Illuminations">
-                <input type="hidden" name="redirect" value="https://web3forms.com/success">
                 
                 <div class="form-group">
                     <label for="name">Full Name *</label>
@@ -1058,6 +1057,7 @@
                 </div>
                 
                 <button type="submit" class="btn">Submit Reservation</button>
+                <p id="reservationStatus" role="status" aria-live="polite" tabindex="-1" style="margin-top: 1rem; line-height: 1.5;"></p>
             </form>
         </div>
     </div>
@@ -1323,5 +1323,6 @@
         // Update cart count when page loads
         updateCartCount();
     </script>
+    <script src="reservation.js"></script>
 </body>
 </html>
