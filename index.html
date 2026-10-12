@@ -985,7 +985,7 @@
             </div>
             <div class="footer-section contact-info">
                 <h4>Contact Us</h4>
-                <p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection#13606a7d7661746a607c75676472607b53747e727a7f3d707c7e">TC Illuminations</a></p>
+                <p><strong>Email:</strong> <a href="mailto:synergysoftwash@gmail.com">TC Illuminations</a></p>
                 <p><strong>Phone:</strong> (352) 804-5785</p>
             </div>
         </div>
@@ -1001,7 +1001,6 @@
             <form id="reservationForm" action="https://api.web3forms.com/submit" method="POST">
                 <input type="hidden" name="access_key" value="cbe199d5-9da2-4948-b047-a780f23c5105">
                 <input type="hidden" name="subject" value="New Tree Reservation from TC Illuminations">
-                <input type="hidden" name="redirect" value="https://web3forms.com/success">
                 
                 <div class="form-group">
                     <label for="name">Full Name *</label>
@@ -1058,11 +1057,13 @@
                 </div>
                 
                 <button type="submit" class="btn">Submit Reservation</button>
+                <p id="reservationStatus" role="status" aria-live="polite" tabindex="-1" style="margin-top: 1rem; line-height: 1.5;"></p>
+                <p style="margin-top: 0.75rem;">Need help? <a href="mailto:synergysoftwash@gmail.com">Email synergysoftwash@gmail.com</a> or <a href="tel:+13528045785">call (352) 804-5785</a>.</p>
             </form>
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         /* --- JS for Light Generation (Enhanced Glow and Movement) --- */
         const lightsContainer = document.getElementById('lightsContainer');
         const colors = ['rgba(255, 100, 100, 1.0)', 'rgba(100, 255, 100, 1.0)', 'rgba(255, 255, 100, 1.0)', 'rgba(100, 100, 255, 1.0)', 'rgba(255, 255, 255, 1.0)'];
@@ -1323,5 +1324,6 @@
         // Update cart count when page loads
         updateCartCount();
     </script>
+    <script src="reservation.js"></script>
 </body>
 </html>

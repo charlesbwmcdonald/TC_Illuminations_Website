@@ -773,6 +773,8 @@
                     <i class="fas fa-paper-plane"></i>
                     Submit Reservation Request
                 </button>
+                <p id="reservationStatus" role="status" aria-live="polite" tabindex="-1" style="margin-top: 1rem; line-height: 1.5;"></p>
+                <p style="margin-top: 0.75rem;">Need help? <a href="mailto:synergysoftwash@gmail.com">Email synergysoftwash@gmail.com</a> or <a href="tel:+13528045785">call (352) 804-5785</a>.</p>
             </form>
         </div>
     </div>
@@ -1017,20 +1019,9 @@
             }
         });
         
-        // Form submission success
-        document.getElementById('reservationForm').addEventListener('submit', function(e) {
-            // Web3Forms will handle the submission
-            // After successful submission, they can clear the cart if desired
-            setTimeout(() => {
-                if (confirm('Reservation submitted! Would you like to clear your cart?')) {
-                    localStorage.removeItem('tcCart');
-                    window.location.href = 'index.html';
-                }
-            }, 500);
-        });
-
         // Initialize cart on page load
         renderCart();
     </script>
+    <script src="reservation.js"></script>
 </body>
 </html>
